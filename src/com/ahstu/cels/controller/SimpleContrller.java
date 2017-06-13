@@ -3,9 +3,9 @@
  */
 package com.ahstu.cels.controller;
 
-import java.util.Scanner;
 
 import com.ahstu.cels.controller.IController;
+import com.ahstu.cels.util.InputUtil;
 import com.ahstu.cels.view.IView;
 import com.ahstu.cels.view.impl.CommandView;
 
@@ -36,15 +36,13 @@ public class SimpleContrller implements IController {
 		int choice = -1; // 定义用户的选择
 		boolean rtnTop = false; // 用来保存是否返回上一级
 		boolean exist = false; // 用来保存是否退出的变量
-		Scanner sc = new Scanner(System.in);
 		// 首先显示欢迎界面
 		view.description();
 		// 利用do while 循环来展现菜单
 		do {
 			// 1. 显示主菜单
 			view.showMainMenu();
-			System.out.print("请选择>");
-			choice = sc.nextInt();
+			choice=InputUtil.getInt("请选择>");
 			//重置rtnTop变量的值为false
 			rtnTop=false;
 			// 2. 根据用户的选择进行分支判断
@@ -54,8 +52,7 @@ public class SimpleContrller implements IController {
 					// 1. 进入第一个子菜单【浏览器库】
 					view.subGameBaseMenu();
 					// 进一步让用户选择
-					System.out.println("   请选择");
-					choice = sc.nextInt();
+					choice=InputUtil.getInt("请选择>");
 					// 进一步分支子菜单处理
 					switch (choice) {
 					case 1:
@@ -82,8 +79,7 @@ public class SimpleContrller implements IController {
 					// 1. 进入第二个子菜单【浏览器库】
 					view.subGameBaseMenu();
 					// 进一步让用户选择
-					System.out.println("   请选择");
-					choice = sc.nextInt();
+					choice=InputUtil.getInt("请选择>");
 					// 进一步分支子菜单处理
 					switch (choice) {
 					case 1:
@@ -111,8 +107,7 @@ public class SimpleContrller implements IController {
 					// 1. 进入第一个子菜单【浏览器库】
 					view.subTestingMenu();
 					// 进一步让用户选择
-					System.out.println("   请选择");
-					choice = sc.nextInt();
+					choice=InputUtil.getInt("请选择>");
 					// 进一步分支子菜单处理
 					switch (choice) {
 					case 1:
