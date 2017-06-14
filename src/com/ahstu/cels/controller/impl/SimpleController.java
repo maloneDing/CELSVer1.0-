@@ -1,10 +1,17 @@
 /**
  * 
  */
-package com.ahstu.cels.controller;
+package com.ahstu.cels.controller.impl;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import com.ahstu.cels.controller.IController;
+import com.ahstu.cels.entity.Word;
+import com.ahstu.cels.service.IBaseTermService;
+import com.ahstu.cels.service.impl.BaseTermServiceImpl;
 import com.ahstu.cels.util.InputUtil;
 import com.ahstu.cels.view.IView;
 import com.ahstu.cels.view.impl.CommandView;
@@ -15,15 +22,19 @@ import com.ahstu.cels.view.impl.CommandView;
  * @createDate 下午2:52:10
  * @version ver1.0
  */
-public class SimpleContrller implements IController {
+public class SimpleController implements IController {
 
 	private IView view; // 使用视图
+	private IBaseTermService baseTermService;// 使用业务层
 
 	/**
 	 * 默认构造器，初始化 视图实例
+	 * 
+	 * @return
 	 */
-	public SimpleContrller() {
+	public SimpleController() {
 		this.view = new CommandView();
+		this.baseTermService = new BaseTermServiceImpl();
 	}
 
 	/*
@@ -42,23 +53,65 @@ public class SimpleContrller implements IController {
 		do {
 			// 1. 显示主菜单
 			view.showMainMenu();
-			choice=InputUtil.getInt("请选择>");
-			//重置rtnTop变量的值为false
-			rtnTop=false;
+			choice = InputUtil.getInt("请选择>");
+			// 重置rtnTop变量的值为false
+			rtnTop = false;
 			// 2. 根据用户的选择进行分支判断
 			switch (choice) {
 			case 1:
 				while (!rtnTop) {
 					// 1. 进入第一个子菜单【浏览器库】
-					view.subGameBaseMenu();
+					view.subshowBaseMenu();
 					// 进一步让用户选择
-					choice=InputUtil.getInt("请选择>");
+					choice = InputUtil.getInt("请选择>");
 					// 进一步分支子菜单处理
 					switch (choice) {
 					case 1:
 						// 浏览单词
-						System.out.println("\n *** 敬请期待，此功能开发中【单词】.....******");
-						// TODO 待开发列表1 -- 浏览单词列表
+						// 1.调用业务方法获取Map集合
+						Map<Character, List<Word>> results = baseTermService.getAllWords();
+						// 2.迭代这个map,并获取一定的格式显示出来即可
+						Set<Character> keys = results.keySet();
+						for (Character key : keys) {
+							// 通过key 来获取value
+							List<Word> values = results.get(key);
+							// 打印显示
+							System.out.printf("%s[%d]   ", key, values.size());
+							// 遇到字母G,N,T，Z 换行
+							if (key == 'G' || key == 'N' || key == 'T' || key == 'Z')
+								System.out.println(); // 换行
+						}
+						// 让用户选择
+						char input = InputUtil.getChar("请选择你要查看的字母>");
+						// 根据用户输入的字母作为key，来获取value 的集合
+						List<Word> showList =results.get(Character.toUpperCase(input));
+						//显示这个集合
+						int count =0;
+						while(count <showList.size()){
+						Word temp=showList.get(count);
+						
+							//
+						
+							System.out.printf("-> %d  %s 的解释是： %s\n",count+1,temp.getEn(),Arrays.toString(temp.getCn()));
+							//计数一次
+							count++;
+							//判断
+							if(count % 15 == 0){ //达到15的整数倍，要暂停
+								//提示用户是否继续
+								input = InputUtil.getChar(" -> 是否查看下一页? n 或N 代表中断，其他字符继续>");
+								// 如果用户输入n,则退出循环
+								if(input=='n' || input=='N'){
+									//
+									break;
+								}
+							}
+							//如果未退出，而显示到最后一个单词，则提示下一个
+							if(count== showList.size()){
+								System.out.println("\n已经翻到了最后... ... ... ...");
+							}
+						}
+						//结束
+						System.out.println("\n ... ... ... ... ... ... ... ... ");
 						break;
 					case 2:
 						// 浏览词汇
@@ -79,7 +132,7 @@ public class SimpleContrller implements IController {
 					// 1. 进入第二个子菜单【浏览器库】
 					view.subGameBaseMenu();
 					// 进一步让用户选择
-					choice=InputUtil.getInt("请选择>");
+					choice = InputUtil.getInt("请选择>");
 					// 进一步分支子菜单处理
 					switch (choice) {
 					case 1:
@@ -93,7 +146,7 @@ public class SimpleContrller implements IController {
 						// TODO 待开发列表4 -- 浏览词汇列表
 						break;
 					case 0:
-						//返回上一级
+						// 返回上一级
 						rtnTop = true;
 						break;
 					default:
@@ -107,7 +160,7 @@ public class SimpleContrller implements IController {
 					// 1. 进入第一个子菜单【浏览器库】
 					view.subTestingMenu();
 					// 进一步让用户选择
-					choice=InputUtil.getInt("请选择>");
+					choice = InputUtil.getInt("请选择>");
 					// 进一步分支子菜单处理
 					switch (choice) {
 					case 1:
@@ -129,11 +182,11 @@ public class SimpleContrller implements IController {
 					}
 				}
 				break;
-				case 0:
-					//代表用户退出
-					exist=true;//即可以退出循环
-					break;
-			default:{
+			case 0:
+				// 代表用户退出
+				exist = true;// 即可以退出循环
+				break;
+			default: {
 				System.out.println("输入有误");
 				break;
 			}
@@ -142,5 +195,5 @@ public class SimpleContrller implements IController {
 		} while (!exist);
 		//
 		System.out.println("\n 程序结束。。。");
-	}//end of method start
+	}// end of method start
 }

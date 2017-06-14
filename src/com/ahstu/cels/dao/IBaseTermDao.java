@@ -3,8 +3,8 @@
  */
 package com.ahstu.cels.dao;
 
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.ahstu.cels.entity.Vocabular;
 import com.ahstu.cels.entity.Word;
@@ -18,10 +18,10 @@ import com.ahstu.cels.entity.Word;
 public interface IBaseTermDao {
 	
 	// 1.查所有的单词
-	List<Word> getAllWords();
+	Set<Word> getAllWords();
 	
 	// 2.差所有的词汇
-	List<Vocabular> getAllvocabular();
+	Set<Vocabular> getAllvocabular();
 	
 	// 3.持久化中英文互答词汇
 	/****

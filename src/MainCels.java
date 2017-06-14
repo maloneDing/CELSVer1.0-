@@ -1,5 +1,6 @@
 import com.ahstu.cels.controller.IController;
-import com.ahstu.cels.controller.SimpleContrller;
+import com.ahstu.cels.controller.impl.SimpleController;
+import com.ahstu.cels.controller.impl.SimpleController;
 
 /**
  * 
@@ -15,7 +16,7 @@ public class MainCels {
 	// 程序入口
 	public static void main(String[] args) {
 		// 创建对象
-		IController controller = new SimpleContrller();
+		IController controller = new SimpleController();
 		// 启动发动器
 		controller.start();
 	}
