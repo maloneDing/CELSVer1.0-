@@ -3,6 +3,7 @@
  */
 package com.ahstu.cels.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -92,6 +93,33 @@ public class PageBean<T> {
 
 	public String getStyle() {
 		return style;
+	}
+
+	public void setData(List<T> data) {
+		this.data = data;
+	}
+	/***************
+	 * 根据页码返回指定页数的数据
+	 * @param page
+	 * @return
+	 */
+	public List<T> getDataByPage(int page) {
+		int validPage = 1;
+		if(page < 0){
+		validPage = first;
+		} else if (page > pages) {
+			validPage = pages;
+		} else {
+			validPage = page;
+		}
+		//
+		List<T> result = new ArrayList<>();
+		// 从原始数据中取出指定页码的数据
+		for(int i =(validPage-1)*rows; i<validPage*rows && i < count ; i++ ){
+			result.add(data.get(i));
+		}
+		//
+		return result;
 	}
 
 }
